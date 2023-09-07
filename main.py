@@ -35,7 +35,7 @@ def test_find_button(get_driver_ajaxsystems):
     assert True
 
 
-def test_click_button(get_driver_ajaxsystems):
+def test_tap_button(get_driver_ajaxsystems):
     driver = get_driver_ajaxsystems
     try:
         log_in_button = driver.find_element(by=AppiumBy.XPATH, value="//*[@text = 'Log In']")   # find the button
@@ -53,5 +53,3 @@ def test_click_button(get_driver_ajaxsystems):
     except Exception as e:
         pytest.skip(f"Appium error: {e}")       # if there's no such thing, end the test
     assert True                                 # executed only if no exceptions were raised (object found)
-
-
