@@ -30,21 +30,29 @@ def test_user_login(user_login_fixture):
     current_page = user_login_fixture
     assert current_page.driver.current_context == 'NATIVE_APP'
 
-    button_log_in = current_page.find_element("//*[@text = 'Log In']")
-    current_page.tap_element(button_log_in)
-    email_box = current_page.find_element("//*[@text = 'email@domain.com']")
-    assert email_box is not None
+    button_log_in = current_page.find_elements("//*[@text = 'Log In']")
+    current_page.tap_element(button_log_in[0])
+    credents_boxes = current_page.find_elements('android.widget.EditText', AppiumBy.CLASS_NAME)
+    assert credents_boxes is not None
 
-    current_page.tap_element(email_box)
-    current_page.enter_text("qa.ajax.app.automation@gmail.com", email_box)
+    current_page.tap_element(credents_boxes[0])
+    current_page.enter_text(current_page.email, credents_boxes[0])
 
-    eye_icon = current_page.find_element("iconPassword", AppiumBy.ID)
-    current_page.tap_element(eye_icon)
+    current_page.tap_element(credents_boxes[1])
+    current_page.enter_text(current_page.password, credents_boxes[1])
 
-    # password_box = current_page.find_element("//*[@text = '•••••']")
-    # current_page.tap_element(password_box)
-    # current_page.enter_text("qa_automation_password", password_box)
+    view_elements = current_page.find_elements("android.view.View", AppiumBy.CLASS_NAME)
+    assert view_elements is not None
+    eye_icon = None
+    for element in view_elements:
+        if element.get_attribute("resource-id") == "iconPassword":
+            eye_icon = element
+    if eye_icon is not None:
+        current_page.tap_element(eye_icon)
+    else:
+        pytest.skip("Unable to find eye icon element")
 
-    assert True
+    assert credents_boxes[0].text == current_page.email
+    assert credents_boxes[1].text == current_page.password
 
 

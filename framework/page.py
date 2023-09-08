@@ -1,4 +1,4 @@
-from typing import Union, Optional
+from typing import Union, Optional, List
 from selenium.webdriver import ActionChains
 from appium.webdriver.webelement import WebElement
 from appium.webdriver.common.appiumby import AppiumBy
@@ -10,14 +10,14 @@ class Page:
     def __init__(self, driver):
         self.driver = driver
 
-    def find_element(self, value: str, type_by: Optional[str] = AppiumBy.XPATH) -> Union[WebElement, None]:
+    def find_elements(self, value: str, type_by: Optional[str] = AppiumBy.XPATH) -> Union[List[WebElement], None]:
         try:
-            element = self.driver.find_element(by=type_by, value=value)
+            elements = self.driver.find_elements(by=type_by, value=value)
         except Exception as e:
             print(f"Appium error: {e}")
             return None
 
-        return element
+        return elements
 
     def tap_element(self, element: WebElement):
         action = TouchAction(self.driver)
@@ -28,12 +28,12 @@ class Page:
 
     def enter_text(self, text: str, element: WebElement):
         try:
-            actions = ActionChains(self.driver)
-            actions.click(element)
-            actions.send_keys(text)
-            actions.perform()
+            element.send_keys(text)
         except Exception as e:
             try:
-                element.send_keys(text)
+                actions = ActionChains(self.driver)
+                actions.click(element)
+                actions.send_keys(text)
+                actions.perform()
             except Exception as e:
                 print(f"Appium error: {e}")

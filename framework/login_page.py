@@ -2,4 +2,8 @@ from .page import Page
 
 
 class LoginPage(Page):
-    pass
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.email = "qa.ajax.app.automation@gmail.com"
+        self.password = "qa_automation_password"
+
