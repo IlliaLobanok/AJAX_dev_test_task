@@ -46,7 +46,14 @@ class LoginPage(Page):
         if button_log_in is None:
             return "ERROR at log_in(): ending button_log_in not found"
         self.tap_element(button_log_in[0])
-        return "OK"
+
+        textview_elements = self.find_elements("android.widget.TextView", AppiumBy.CLASS_NAME)
+        if textview_elements is not None:
+            for element in textview_elements:
+                if element.get_attribute("resource-id") == "com.ajaxsystems:id/snackbar_text":
+                    return "ERROR at log_in(): " + element.text
+
+        return None
 
 
 
