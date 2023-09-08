@@ -1,5 +1,5 @@
 from typing import Union, Optional, List
-from selenium.webdriver import ActionChains
+# from selenium.webdriver import ActionChains
 from appium.webdriver.webelement import WebElement
 from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.touch_action import TouchAction
@@ -30,10 +30,16 @@ class Page:
         try:
             element.send_keys(text)
         except Exception as e:
-            try:
-                actions = ActionChains(self.driver)
-                actions.click(element)
-                actions.send_keys(text)
-                actions.perform()
-            except Exception as e:
-                print(f"Appium error: {e}")
+            print(f"Appium error: {e}")
+
+    # def enter_text(self, text: str, element: WebElement):
+    #     try:
+    #         element.send_keys(text)
+    #     except Exception as e:
+    #         try:
+    #             actions = ActionChains(self.driver)
+    #             actions.click(element)
+    #             actions.send_keys(text)
+    #             actions.perform()
+    #         except Exception as e:
+    #             print(f"Appium error: {e}")

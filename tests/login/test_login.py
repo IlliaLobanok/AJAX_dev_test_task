@@ -5,26 +5,31 @@ from appium.webdriver.common.appiumby import AppiumBy
 from framework import LoginPage
 
 
-@pytest.fixture
-def get_driver_ajaxsystems():
-    capabilities = dict(
-        platformName='Android',
-        automationName='uiautomator2',
-        deviceName='my_phone',
-        appPackage='com.ajaxsystems',
-        appActivity='.ui.activity.LauncherActivity',
-        noReset=False,
-        language='en',
-        locale='US'
-    )
-    appium_server_url = 'http://localhost:4723'
+# @pytest.fixture
+# def get_driver_ajaxsystems():
+#     capabilities = dict(
+#         platformName='Android',
+#         automationName='uiautomator2',
+#         deviceName='my_phone',
+#         appPackage='com.ajaxsystems',
+#         appActivity='.ui.activity.LauncherActivity',
+#         noReset=False,
+#         language='en',
+#         locale='US'
+#     )
+#     appium_server_url = 'http://localhost:4723'
+#
+#     return webdriver.Remote(appium_server_url, capabilities)
 
-    return webdriver.Remote(appium_server_url, capabilities)
+
+# @pytest.fixture
+# def user_login_fixture(get_driver_ajaxsystems):
+#     yield LoginPage(get_driver_ajaxsystems)
 
 
-@pytest.fixture
-def user_login_fixture(get_driver_ajaxsystems):
-    yield LoginPage(get_driver_ajaxsystems)
+def test_connection(user_login_fixture):
+    driver = user_login_fixture
+    assert driver.current_context == 'NATIVE_APP'
 
 
 def test_login_positive(user_login_fixture):

@@ -5,11 +5,13 @@ def android_get_desired_capabilities():
         'newCommandTimeout': 500,
         'noSign': True,
         'platformName': 'Android',
-        'platformVersion': '10',
+        # 'platformVersion': '10',
         'resetKeyboard': True,
         'systemPort': 8301,
         'takesScreenshot': True,
         'udid': '11bd127d',
         'appPackage': 'com.ajaxsystems',
-        'appActivity': 'com.ajaxsystems.ui.activity.LauncherActivity'
-}
+        'appActivity': 'com.ajaxsystems.ui.activity.LauncherActivity',
+        'language': 'en',
+        'locale': 'US'
+    }
