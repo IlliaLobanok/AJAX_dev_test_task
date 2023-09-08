@@ -7,3 +7,5 @@ class LoginPage(Page):
         self.email = "qa.ajax.app.automation@gmail.com"
         self.password = "qa_automation_password"
 
+    def log_in(self):
+        pass
