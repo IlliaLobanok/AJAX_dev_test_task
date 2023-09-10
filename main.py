@@ -1,6 +1,5 @@
 import pytest
 from appium import webdriver
-from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.touch_action import TouchAction
 
 
@@ -29,7 +28,7 @@ def test_connection(get_driver_ajaxsystems):
 def test_find_button(get_driver_ajaxsystems):
     driver = get_driver_ajaxsystems
     try:
-        log_in_button = driver.find_element(by=AppiumBy.XPATH, value="//*[@text = 'Log In']")
+        log_in_button = driver.find_element(by="xpath", value="//*[@text = 'Log In']")
     except Exception as e:
         pytest.skip(f"Appium error: {e}")
     assert True
@@ -38,7 +37,7 @@ def test_find_button(get_driver_ajaxsystems):
 def test_tap_button(get_driver_ajaxsystems):
     driver = get_driver_ajaxsystems
     try:
-        log_in_button = driver.find_element(by=AppiumBy.XPATH, value="//*[@text = 'Log In']")   # find the button
+        log_in_button = driver.find_element(by="xpath", value="//*[@text = 'Log In']")   # find the button
     except Exception as e:
         pytest.skip(f"Appium error: {e}")
 
@@ -49,7 +48,7 @@ def test_tap_button(get_driver_ajaxsystems):
         pytest.skip(f"Appium error: {e}")
 
     try:
-        email_box = driver.find_element(by=AppiumBy.XPATH, value="//*[@text = 'Email']")    # look for an email box
+        email_box = driver.find_element(by="xpath", value="//*[@text = 'Email']")    # look for an email box
     except Exception as e:
         pytest.skip(f"Appium error: {e}")       # if there's no such thing, end the test
     assert True                                 # executed only if no exceptions were raised (object found)

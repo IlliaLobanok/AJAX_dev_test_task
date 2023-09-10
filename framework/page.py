@@ -1,7 +1,6 @@
 from typing import Union, Optional, List
 from selenium.webdriver import ActionChains
 from appium.webdriver.webelement import WebElement
-from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.common.touch_action import TouchAction
 
 
@@ -10,7 +9,7 @@ class Page:
     def __init__(self, driver):
         self.driver = driver
 
-    def find_elements(self, value: str, type_by: Optional[str] = AppiumBy.XPATH) -> Union[List[WebElement], None]:
+    def find_elements(self, value: str, type_by: Optional[str] = "xpath") -> Union[List[WebElement], None]:
         try:
             elements = self.driver.find_elements(by=type_by, value=value)
         except Exception as e:
