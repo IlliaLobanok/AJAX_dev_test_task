@@ -4,7 +4,24 @@ import time
 import pytest
 from appium import webdriver
 
-from utils.android_utils import android_get_desired_capabilities
+from utils import android_get_desired_capabilities
+
+
+@pytest.fixture(scope='class')
+def get_driver_ajaxsystems():
+    capabilities = dict(
+        platformName='Android',
+        automationName='uiautomator2',
+        deviceName='my_phone',
+        appPackage='com.ajaxsystems',
+        appActivity='.ui.activity.LauncherActivity',
+        noReset=False,
+        language='en',
+        locale='US'
+    )
+    appium_server_url = 'http://localhost:4723'
+
+    return webdriver.Remote(appium_server_url, capabilities)
 
 
 @pytest.fixture(scope='session')
