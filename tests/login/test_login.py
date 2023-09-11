@@ -2,9 +2,10 @@ import pytest
 
 
 class TestPositive:
-    def test_login_positive(self, user_login_fixture):
+    def test_login_positive(self, user_login_fixture, setup_logger):
         current_page = user_login_fixture
         assert current_page.driver.current_context == "NATIVE_APP"
+        setup_logger.debug("Native app started successfully")
 
         result_login_sequence = current_page.log_in()
         if result_login_sequence is not None:
@@ -12,9 +13,10 @@ class TestPositive:
 
 
 class TestNegative:
-    def test_login_negative_invalid_email(self, user_login_fixture):
+    def test_login_negative_invalid_email(self, user_login_fixture, setup_logger):
         current_page = user_login_fixture
         assert current_page.driver.current_context == "NATIVE_APP"
+        setup_logger.debug(f"{__name__}: Native app started successfully")
 
         result_login_sequence = current_page.log_in("examplegmail.com", "123456")
         if result_login_sequence is not None:

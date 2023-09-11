@@ -1,14 +1,30 @@
 import subprocess
 import time
 
+import logging
 import pytest
 from appium import webdriver
 
 from utils import android_get_desired_capabilities
 
 
+@pytest.fixture(scope='session')
+def setup_logger():
+    logger = logging.getLogger("test_logger")
+    logger.setLevel(logging.DEBUG)
+    handler = logging.FileHandler("tests/test_log.txt")
+    handler.setLevel(logging.DEBUG)
+    log_format = logging.Formatter("%(asctime)s ::: %(levelname)s ::: %(message)s")
+    handler.setFormatter(log_format)
+    logger.addHandler(handler)
+
+    logger.info(f"Logging service started at {__name__}")
+
+    return logger
+
+
 @pytest.fixture(scope='class')
-def get_driver_ajaxsystems():
+def get_driver_ajaxsystems(setup_logger):
     capabilities = dict(
         platformName='Android',
         automationName='uiautomator2',
@@ -20,6 +36,8 @@ def get_driver_ajaxsystems():
         locale='US'
     )
     appium_server_url = 'http://localhost:4723'
+
+    setup_logger.info("Starting up the driver...")
 
     return webdriver.Remote(appium_server_url, capabilities)
 
