@@ -9,25 +9,18 @@ from utils import android_get_desired_capabilities
 from logger import TLogger
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='session', autouse=True)
 def setup_logger():
     logging.setLoggerClass(TLogger)
+    logger = logging.getLogger(__name__)
 
-    logger = logging.getLogger("test_logger")
-    logger.setLevel(logging.DEBUG)
-    handler = logging.FileHandler("tests/test_log.txt")
-    handler.setLevel(logging.DEBUG)
-    log_format = logging.Formatter("%(asctime)s ::: %(levelname)s ::: %(message)s")
-    handler.setFormatter(log_format)
-    logger.addHandler(handler)
-
-    logger.info(f"Logging service started at {__name__}")
+    logger.info(f"Logging service started")
 
     return logger
 
 
 @pytest.fixture(scope='class')
-def get_driver_ajaxsystems(setup_logger):
+def get_driver_ajaxsystems():
     capabilities = dict(
         platformName='Android',
         automationName='uiautomator2',
@@ -40,7 +33,8 @@ def get_driver_ajaxsystems(setup_logger):
     )
     appium_server_url = 'http://localhost:4723'
 
-    setup_logger.info("Starting up the driver...")
+    logger = logging.getLogger(__name__)
+    logger.info("Starting up the driver")
 
     return webdriver.Remote(appium_server_url, capabilities)
 
