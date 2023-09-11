@@ -1,3 +1,5 @@
+import logging
+
 from .page import Page
 from typing import Optional
 
@@ -14,14 +16,19 @@ class LoginPage(Page):
         if password is None:
             password = self.password
 
+        logger = logging.getLogger(__name__)
+        logger.info(f"Started log_in function with {email}, {password}")
+
         button_log_in = self.find_elements("//*[@text = 'Log In']")
         if button_log_in is None:
-            return "ERROR at log_in(): starting button_log_in not found"
+            logger.error("Starting button_log_in not found.")
+            return False
         self.tap_element(button_log_in[0])
 
         credents_boxes = self.find_elements('android.widget.EditText', "class name")
         if credents_boxes is None:
-            return "ERROR at log_in(): credents_boxes not found"
+            logger.error("Credentials boxes not found.")
+            return False
         self.tap_element(credents_boxes[0])
         self.enter_text(email, credents_boxes[0])
         self.tap_element(credents_boxes[1])
@@ -29,7 +36,8 @@ class LoginPage(Page):
 
         view_elements = self.find_elements("android.view.View", "class name")
         if view_elements is None:
-            return "ERROR at log_in(): view_elements not found"
+            logger.error("View_elements not found.")
+            return False
         eye_icon = None
         for element in view_elements:
             if element.get_attribute("resource-id") == "iconPassword":
@@ -37,19 +45,21 @@ class LoginPage(Page):
         if eye_icon is not None:
             self.tap_element(eye_icon)
         else:
-            return "ERROR at log_in(): eye_icon not found"
+            logger.error("Eye_icon not found.")
+            return False
         if not credents_boxes[0].text == email and credents_boxes[1].text == password:
-            return "ERROR at log_in(): credents_boxes test values do not equal desired ones"
+            logger.error("Credentials boxes values do not equal the desired ones.")
+            return False
 
         button_log_in = self.find_elements("//*[@text = 'Log In']")
         if button_log_in is None:
-            return "ERROR at log_in(): ending button_log_in not found"
+            logger.error("Ending button_log_in not found.")
+            return False
         self.tap_element(button_log_in[0])
 
-        textview_elements = self.find_elements("android.widget.TextView", "class name")
-        if textview_elements is not None:
-            for element in textview_elements:
-                if element.get_attribute("resource-id") == "com.ajaxsystems:id/snackbar_text":
-                    return "ERROR at log_in(): " + element.text
+        snackbar_text = self.catch_snackbar()
+        if snackbar_text is None:
+            return None
+        else:
+            return snackbar_text
 
-        return None

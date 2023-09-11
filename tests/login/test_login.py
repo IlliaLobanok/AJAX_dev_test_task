@@ -11,13 +11,11 @@ class TestPositive:
         try:
             assert current_page.driver.current_context == "NATIVE_APP"
         except AssertionError as error:
-            logger.error(f"Did not made it to native app: {error}")
+            logger.error(f"Did not make it to native app: {error}")
 
         logger.debug("Native app started successfully.")
 
-        result_login_sequence = current_page.log_in()
-        if result_login_sequence is not None:
-            pytest.skip(result_login_sequence)
+        assert current_page.log_in() is None
 
 
 class TestNegative:
@@ -29,10 +27,10 @@ class TestNegative:
         try:
             assert current_page.driver.current_context == "NATIVE_APP"
         except AssertionError as error:
-            logger.error(f"Did not made it to native app: {error}")
+            logger.error(f"Did not make it to native app: {error}")
 
         logger.debug("Native app started successfully.")
 
         result_login_sequence = current_page.log_in("examplegmail.com", "123456")
         if result_login_sequence is not None:
-            assert result_login_sequence == "ERROR at log_in(): Invalid email format"
+            assert result_login_sequence == "Invalid email format"

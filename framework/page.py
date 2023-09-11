@@ -1,3 +1,4 @@
+import logging
 from typing import Union, Optional, List
 from selenium.webdriver import ActionChains
 from appium.webdriver.webelement import WebElement
@@ -13,7 +14,8 @@ class Page:
         try:
             elements = self.driver.find_elements(by=type_by, value=value)
         except Exception as e:
-            print(f"Appium error: {e}")
+            logger = logging.getLogger(__name__)
+            logger.exception(f"While searching for {value}: ")
             return None
 
         return elements
@@ -23,7 +25,8 @@ class Page:
         try:
             action.tap(element).perform()  # tap the button
         except Exception as e:
-            print(f"Appium error: {e}")
+            logger = logging.getLogger(__name__)
+            logger.exception(f"While tapping the {element}: ")
 
     def enter_text(self, text: str, element: WebElement):
         try:
@@ -35,4 +38,18 @@ class Page:
                 actions.send_keys(text)
                 actions.perform()
             except Exception as e:
-                print(f"Appium error: {e}")
+                logger = logging.getLogger(__name__)
+                logger.exception(f"While sending {text} to {element}: ")
+
+    def catch_snackbar(self):
+        logger = logging.getLogger(__name__)
+        logger.info("Looking for snackbars.")
+        textview_elements = self.find_elements("android.widget.TextView", "class name")
+        if textview_elements is not None:
+            for element in textview_elements:
+                if element.get_attribute("resource-id") == "com.ajaxsystems:id/snackbar_text":
+                    logger.error(f"Snackbar found: {element.text}")
+                    return element.text
+        logger.info("No snackbars found, exiting function.")
+        return None
+
