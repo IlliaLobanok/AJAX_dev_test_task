@@ -6,10 +6,13 @@ import pytest
 from appium import webdriver
 
 from utils import android_get_desired_capabilities
+from logger import TLogger
 
 
 @pytest.fixture(scope='session')
 def setup_logger():
+    logging.setLoggerClass(TLogger)
+
     logger = logging.getLogger("test_logger")
     logger.setLevel(logging.DEBUG)
     handler = logging.FileHandler("tests/test_log.txt")
