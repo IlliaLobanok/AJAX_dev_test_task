@@ -1,4 +1,5 @@
 import logging
+import time
 
 from .page import Page
 from typing import Optional
@@ -52,7 +53,7 @@ class LoginPage(Page):
 
         snackbar_text = self.catch_snackbar()
         if snackbar_text is None:
+            time.sleep(5)
             return None
         else:
             return snackbar_text
-

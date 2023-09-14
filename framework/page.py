@@ -29,10 +29,10 @@ class Page:
                     found_element = element
 
             if found_element is None:
-                logger.error(f"{value} of {by_type} with {attribute} of {attr_value} not found.")
+                logger.error(f"{by_type} of {value} with {attribute} of {attr_value} not found.")
                 return None
             else:
-                logger.info(f"{value} of {by_type} with {attribute} of {attr_value} found successfully.")
+                logger.info(f"{by_type} of {value} with {attribute} of {attr_value} found successfully.")
                 return found_element
         else:
             return elements
