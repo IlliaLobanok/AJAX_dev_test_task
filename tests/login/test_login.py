@@ -5,7 +5,7 @@ import logging
 class TestPositive:
     def test_login_positive(self, user_login_fixture):
         logger = logging.getLogger(__name__)
-        logger.info("test_login_positive started.")
+        logger.info("Started test_login_positive.")
 
         current_page = user_login_fixture
         try:
@@ -21,7 +21,7 @@ class TestPositive:
 class TestNegative:
     def test_login_negative_invalid_email(self, user_login_fixture):
         logger = logging.getLogger(__name__)
-        logger.info("test_login_negative_invalid_email started.")
+        logger.info("Started test_login_negative_invalid_email.")
 
         current_page = user_login_fixture
         try:

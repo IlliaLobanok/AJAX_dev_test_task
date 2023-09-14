@@ -26,7 +26,7 @@ class Page:
             action.tap(element).perform()  # tap the button
         except Exception as e:
             logger = logging.getLogger(__name__)
-            logger.exception(f"While tapping the {element}: ")
+            logger.exception(f"While tapping the {element.id}: ")
 
     def enter_text(self, text: str, element: WebElement):
         try:
@@ -39,11 +39,11 @@ class Page:
                 actions.perform()
             except Exception as e:
                 logger = logging.getLogger(__name__)
-                logger.exception(f"While sending {text} to {element}: ")
+                logger.exception(f"While sending {text} to {element.id}: ")
 
     def catch_snackbar(self):
         logger = logging.getLogger(__name__)
-        logger.info("Looking for snackbars.")
+        logger.info("Looking for snackbars via catch_snackbars.")
         textview_elements = self.find_elements("android.widget.TextView", "class name")
         if textview_elements is not None:
             for element in textview_elements:
