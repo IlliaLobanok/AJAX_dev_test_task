@@ -11,21 +11,12 @@ class MainPage(Page):
         logger = logging.getLogger(__name__)
         logger.info("Started is_main check function.")
 
-        view_groups = self.find_elements("android.view.ViewGroup", "class name")
-        add_hub_button = None
-        if view_groups is not None:
-            for element in view_groups:
-                if element.get_attribute("resource-id") == "com.ajaxsystems:id/hubAdd":
-                    add_hub_button = element
-        else:
-            logger.error("No view_groups found on current page. Make sure log in process is OK.")
-            return False
-        
+        add_hub_button = self.find_elements(value="android.view.ViewGroup", attr_value="com.ajaxsystems:id/hubAdd")
         if add_hub_button is not None:
             logger.debug("Add hub button found successfully.")
             return True
         else:
-            logger.error("No add hub buttons found among view_groups on current page. Make sure log in process is OK.")
+            logger.error("No add hub buttons found on current page. Make sure log in process is OK.")
             return False
 
     def open_burger_menu(self):
@@ -36,18 +27,9 @@ class MainPage(Page):
             logger.error("Current page is not main. open_burger_menu stopped.")
             return False
 
-        image_views = self.find_elements("android.widget.ImageView", "class name")
-        menu_button = None
-        if image_views is not None:
-            for element in image_views:
-                if element.get_attribute("resource-id") == "com.ajaxsystems:id/menuDrawer":
-                    menu_button = element
-        else:
-            logger.error("No image_views found.")
-            return False
-
+        menu_button = self.find_elements(value="android.widget.ImageView", attr_value="com.ajaxsystems:id/menuDrawer")
         if menu_button is None:
-            logger.error("No menu buttons found among image_views.")
+            logger.error("No menu buttons found.")
             return False
 
         self.tap_element(menu_button)

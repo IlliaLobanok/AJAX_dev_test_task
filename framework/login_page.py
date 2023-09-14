@@ -19,13 +19,13 @@ class LoginPage(Page):
         logger = logging.getLogger(__name__)
         logger.info(f"Started log_in function with {email}, {password}")
 
-        button_log_in = self.find_elements("//*[@text = 'Log In']")
+        button_log_in = self.find_elements(value="android.widget.FrameLayout", attr_value="com.ajaxsystems:id/authHelloLogin")
         if button_log_in is None:
             logger.error("Starting button_log_in not found.")
             return False
-        self.tap_element(button_log_in[0])
+        self.tap_element(button_log_in)
 
-        credents_boxes = self.find_elements('android.widget.EditText', "class name")
+        credents_boxes = self.find_elements('android.widget.EditText')
         if credents_boxes is None:
             logger.error("Credentials boxes not found.")
             return False
@@ -34,14 +34,7 @@ class LoginPage(Page):
         self.tap_element(credents_boxes[1])
         self.enter_text(password, credents_boxes[1])
 
-        view_elements = self.find_elements("android.view.View", "class name")
-        if view_elements is None:
-            logger.error("View_elements not found.")
-            return False
-        eye_icon = None
-        for element in view_elements:
-            if element.get_attribute("resource-id") == "iconPassword":
-                eye_icon = element
+        eye_icon = self.find_elements(value="android.view.View", attr_value="iconPassword")
         if eye_icon is not None:
             self.tap_element(eye_icon)
         else:
@@ -51,11 +44,11 @@ class LoginPage(Page):
             logger.error("Credentials boxes values do not equal the desired ones.")
             return False
 
-        button_log_in = self.find_elements("//*[@text = 'Log In']")
+        button_log_in = self.find_elements(value="androidx.compose.ui.platform.ComposeView", attr_value="com.ajaxsystems:id/compose_view")
         if button_log_in is None:
             logger.error("Ending button_log_in not found.")
             return False
-        self.tap_element(button_log_in[0])
+        self.tap_element(button_log_in)
 
         snackbar_text = self.catch_snackbar()
         if snackbar_text is None:
