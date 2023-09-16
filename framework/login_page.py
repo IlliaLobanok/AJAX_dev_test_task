@@ -49,11 +49,13 @@ class LoginPage(Page):
         if button_log_in is None:
             logger.error("Ending button_log_in not found.")
             return False
-        self.tap_element(button_log_in)
 
-        snackbar_text = self.catch_snackbar()
-        if snackbar_text is None:
-            time.sleep(5)
-            return None
-        else:
-            return snackbar_text
+        for i in range(3):
+            self.tap_element(button_log_in)
+            snackbar_text = self.catch_snackbar()
+            if snackbar_text is None:
+                time.sleep(3)
+                return None
+            else:
+                if snackbar_text.split()[0] != "Synchronising":
+                    return snackbar_text

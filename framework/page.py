@@ -1,4 +1,5 @@
 import logging
+import time
 from typing import Union, Optional, List
 from selenium.webdriver import ActionChains
 from appium.webdriver.webelement import WebElement
@@ -41,9 +42,11 @@ class Page:
         action = TouchAction(self.driver)
         try:
             action.tap(element).perform()  # tap the button
+            return True
         except Exception as e:
             logger = logging.getLogger(__name__)
             logger.exception(f"While tapping the {element.id}: ")
+            return False
 
     def enter_text(self, text: str, element: WebElement):
         try:
@@ -62,10 +65,15 @@ class Page:
         logger = logging.getLogger(__name__)
         logger.info("Looking for snackbars via catch_snackbars.")
 
-        snackbar = self.find_elements(value="android.widget.TextView", attr_value="com.ajaxsystems:id/snackbar_text")
-        if snackbar is not None:
-            logger.error(f"Snackbar found: {snackbar.text}")
-            return snackbar.text
+        for i in range(7):
+            snackbar = self.find_elements(value="android.widget.TextView",
+                                          attr_value="com.ajaxsystems:id/snackbar_text")
+            if snackbar is not None:
+                logger.error(f"Snackbar found: {snackbar.text}")
+                return snackbar.text
+            else:
+                time.sleep(0.5)
+
         logger.info("No snackbars found.")
         return None
 
