@@ -7,4 +7,4 @@ from framework import LoginPage, MainPage
 def main_page_fixture(get_driver_ajaxsystems):
     page = LoginPage(get_driver_ajaxsystems)
     if page.log_in() is None:
-        yield MainPage(page.driver)
+        return MainPage(page.driver)

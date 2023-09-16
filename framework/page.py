@@ -66,8 +66,12 @@ class Page:
         logger.info("Looking for snackbars via catch_snackbars.")
 
         for i in range(7):
-            snackbar = self.find_elements(value="android.widget.TextView",
+            snackbar = None
+            try:
+                snackbar = self.find_elements(value="android.widget.TextView",
                                           attr_value="com.ajaxsystems:id/snackbar_text")
+            except Exception as e:
+                logger.exception("Got an exception while searching for snackbars: ")
             if snackbar is not None:
                 logger.error(f"Snackbar found: {snackbar.text}")
                 return snackbar.text
