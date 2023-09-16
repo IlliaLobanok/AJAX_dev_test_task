@@ -1,4 +1,5 @@
 import logging
+from typing import Literal
 
 from .page import Page
 
@@ -12,11 +13,13 @@ class MainPage(Page):
         logger.info("Started is_main check function.")
 
         add_hub_button = self.find_elements(value="android.view.ViewGroup", attr_value="com.ajaxsystems:id/hubAdd")
-        if add_hub_button is not None:
-            logger.debug("Add hub button found successfully.")
+        menu_button = self.find_elements(value="android.widget.ImageView", attr_value="com.ajaxsystems:id/menuDrawer")
+
+        if add_hub_button is not None and menu_button is not None:
+            logger.debug("Add hub & burger menu buttons found successfully.")
             return True
         else:
-            logger.error("No add hub buttons found on current page. Make sure log in process is OK.")
+            logger.error("No add hub or burger menu buttons found on current page. Make sure log in process is OK.")
             return False
 
     def open_burger_menu(self):
@@ -28,6 +31,7 @@ class MainPage(Page):
             return False
 
         if self.is_menu_opened():
+            logger.debug("Menu is already opened.")
             return True
 
         menu_button = self.find_elements(value="android.widget.ImageView", attr_value="com.ajaxsystems:id/menuDrawer")
@@ -36,8 +40,10 @@ class MainPage(Page):
             return False
 
         if self.tap_element(menu_button):
+            logger.debug("Burger menu opened successfully.")
             return True
         else:
+            logger.error("Burger menu opening failed on button tapping stage.")
             return False
 
     def is_menu_opened(self):
@@ -53,25 +59,23 @@ class MainPage(Page):
             logger.debug("Settings & help buttons found.")
             return True
 
-    def open_settings(self):
+    def open_menu_item(self, item=Literal["settings", "help", "logs", "camera"]):
         logger = logging.getLogger(__name__)
-        logger.info("Started open_settings sequence.")
+        logger.info(f"Started open_menu_item sequence for {item}.")
 
         if not self.open_burger_menu():
             logger.error("Failed to open burger_menu.")
             return False
 
-        settings_button = self.find_elements(value="android.view.View", attr_value="com.ajaxsystems:id/settings")
-        if settings_button is None:
-            logger.error("No settings button found.")
+        item_button = self.find_elements(value="android.view.View", attr_value=f"com.ajaxsystems:id/{item}")
+        if item_button is None:
+            logger.error(f"No {item} button found.")
             return False
 
-        if self.tap_element(settings_button):
+        if self.tap_element(item_button):
             return True
         else:
             return False
 
     def log_out(self):
         pass
-
-

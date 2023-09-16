@@ -57,5 +57,7 @@ class LoginPage(Page):
                 time.sleep(3)
                 return None
             else:
-                if snackbar_text.split()[0] != "Synchronising":
+                if snackbar_text != "Synchronizing with the server, please wait":
                     return snackbar_text
+                else:
+                    time.sleep(3)

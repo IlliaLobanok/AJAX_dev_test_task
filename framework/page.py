@@ -36,6 +36,7 @@ class Page:
                 logger.info(f"{by_type} of {value} with {attribute} of {attr_value} found successfully.")
                 return found_element
         else:
+            logger.info(f"Returning elements with {by_type} of {value}.")
             return elements
 
     def tap_element(self, element: WebElement):
@@ -69,7 +70,7 @@ class Page:
             snackbar = None
             try:
                 snackbar = self.find_elements(value="android.widget.TextView",
-                                          attr_value="com.ajaxsystems:id/snackbar_text")
+                                              attr_value="com.ajaxsystems:id/snackbar_text")
             except Exception as e:
                 logger.exception("Got an exception while searching for snackbars: ")
             if snackbar is not None:
@@ -80,4 +81,3 @@ class Page:
 
         logger.info("No snackbars found.")
         return None
-
